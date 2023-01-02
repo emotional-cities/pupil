@@ -1,17 +1,14 @@
 ﻿using Bonsai;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using NetMQ.Zyre;
-using System.Reactive.Disposables;
 using NetMQ.Zyre.ZyreEvents;
-using NetMQ;
+using Newtonsoft.Json.Linq;
 
 namespace PupilInterface
 {
-    public class ZreNode : Source<ZyreEventWhisper>
+    public class ZreNode : Source<SensorData>
     {
         /// <summary>
         /// Gets or sets the Zyre node name.
@@ -23,7 +20,7 @@ namespace PupilInterface
         /// </summary>
         public string JoinGroup { get; set; }
 
-        public override IObservable<ZyreEventWhisper> Generate()
+        public override IObservable<SensorData> Generate()
         {
             Zyre zyre = new Zyre(Name);
 
@@ -32,8 +29,21 @@ namespace PupilInterface
             zyre.Start();
 
             return Observable.FromEventPattern<ZyreEventWhisper>(zyre, "WhisperEvent")
-                .Select(e => e.EventArgs)
+                .Select(e => {
+                    var payload = e.EventArgs.Content.Last.ConvertToString();
+                    dynamic jData = JObject.Parse(payload);
+                    string sensorName = jData.sensor_name;
+                    string dataEndpoint = jData.data_endpoint;
+
+                    return new SensorData { SensorName = sensorName, DataEndpoint = dataEndpoint };
+                })
                 .Finally(() => zyre.Dispose());
         }
+    }
+
+    public class SensorData
+    {
+        public string SensorName;
+        public string DataEndpoint;
     }
 }

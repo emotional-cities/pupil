@@ -20,6 +20,7 @@
     <PackageReference Include="Bonsai.Core" Version="2.7.1" />
     <PackageReference Include="NetMQ" Version="4.0.1.10" />
     <PackageReference Include="NetMQ.Zyre" Version="1.0.0-rc1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
 </Project>
