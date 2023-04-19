@@ -13,7 +13,7 @@
     <PackageTags>Bonsai Rx PupilInterface</PackageTags>
     <TargetFramework>net472</TargetFramework>
     <Features>strict</Features>
-    <Version>0.1.0</Version>
+    <Version>0.1.0-rc1</Version>
   </PropertyGroup>
 
   <ItemGroup>
