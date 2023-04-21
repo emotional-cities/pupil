@@ -34,7 +34,6 @@ namespace PupilInterface
         {
             FFmpegBinariesHelper.RegisterFFmpegBinaries(); // TODO - this sort of stuff should probably go in some general resource node
             DynamicallyLoadedBindings.Initialize();
-            //ffmpeg.RootPath = "C:\\Users\\neurogears\\source\\repos\\FFmpeg.AutoGen\\FFmpeg\\bin\\x64";
 
             codecID = AVCodecID.AV_CODEC_ID_H264;
             pAvCodec = ffmpeg.avcodec_find_decoder(codecID);
