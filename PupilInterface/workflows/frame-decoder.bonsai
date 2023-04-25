@@ -11,7 +11,7 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="rx:Range">
           <rx:Start>0</rx:Start>
-          <rx:Count>100</rx:Count>
+          <rx:Count>10000</rx:Count>
         </Combinator>
       </Expression>
       <Expression xsi:type="ExternalizedMapping">
@@ -26,7 +26,7 @@
             </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT0.01S</rx:DueTime>
+                <rx:DueTime>PT0.05S</rx:DueTime>
               </Combinator>
             </Expression>
             <Expression xsi:type="Multiply">
@@ -45,7 +45,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixReader">
                 <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame1.bin</dsp:Path>
-                <dsp:Offset>3168</dsp:Offset>
+                <dsp:Offset>39968</dsp:Offset>
                 <dsp:SampleRate>0</dsp:SampleRate>
                 <dsp:ChannelCount>1</dsp:ChannelCount>
                 <dsp:BufferLength>32</dsp:BufferLength>
@@ -81,6 +81,34 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:ToVideoDataHeader" />
       </Expression>
+      <Expression xsi:type="MemberSelector">
+        <Selector>DataBytes</Selector>
+      </Expression>
+      <Expression xsi:type="SubscribeSubject">
+        <Name>Offset</Name>
+      </Expression>
+      <Expression xsi:type="Combinator">
+        <Combinator xsi:type="rx:Zip" />
+      </Expression>
+      <Expression xsi:type="rx:Sink">
+        <Workflow>
+          <Nodes>
+            <Expression xsi:type="WorkflowInput">
+              <Name>Source1</Name>
+            </Expression>
+            <Expression xsi:type="Add" />
+            <Expression xsi:type="MulticastSubject">
+              <Name>Offset</Name>
+            </Expression>
+            <Expression xsi:type="WorkflowOutput" />
+          </Nodes>
+          <Edges>
+            <Edge From="0" To="1" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="3" Label="Source1" />
+          </Edges>
+        </Workflow>
+      </Expression>
       <Expression xsi:type="ExternalizedMapping">
         <Property Name="Path" DisplayName="VideoStream" />
       </Expression>
@@ -91,37 +119,32 @@
             <Expression xsi:type="WorkflowInput">
               <Name>Source1</Name>
             </Expression>
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Delay">
-                <rx:DueTime>PT0.01S</rx:DueTime>
-              </Combinator>
-            </Expression>
             <Expression xsi:type="MemberSelector">
-              <Selector>DataBytes</Selector>
+              <Selector>Item1</Selector>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
                 <Property Name="BufferLength" />
               </PropertyMappings>
             </Expression>
-            <Expression xsi:type="ExternalizedMapping">
-              <Property Name="Path" />
-            </Expression>
-            <Expression xsi:type="SubscribeSubject">
-              <Name>VideoBytesRead</Name>
+            <Expression xsi:type="MemberSelector">
+              <Selector>Item2</Selector>
             </Expression>
             <Expression xsi:type="PropertyMapping">
               <PropertyMappings>
                 <Property Name="Offset" />
               </PropertyMappings>
             </Expression>
+            <Expression xsi:type="ExternalizedMapping">
+              <Property Name="Path" />
+            </Expression>
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixReader">
                 <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame2.bin</dsp:Path>
-                <dsp:Offset>1051896</dsp:Offset>
+                <dsp:Offset>13039680</dsp:Offset>
                 <dsp:SampleRate>0</dsp:SampleRate>
                 <dsp:ChannelCount>1</dsp:ChannelCount>
-                <dsp:BufferLength>10642</dsp:BufferLength>
+                <dsp:BufferLength>8482</dsp:BufferLength>
                 <dsp:Depth>U8</dsp:Depth>
                 <dsp:Layout>RowMajor</dsp:Layout>
               </Combinator>
@@ -132,29 +155,17 @@
               </Combinator>
             </Expression>
             <Expression xsi:type="WorkflowOutput" />
-            <Expression xsi:type="Combinator">
-              <Combinator xsi:type="rx:Zip" />
-            </Expression>
-            <Expression xsi:type="Add" />
-            <Expression xsi:type="MulticastSubject">
-              <Name>VideoBytesRead</Name>
-            </Expression>
           </Nodes>
           <Edges>
             <Edge From="0" To="1" Label="Source1" />
-            <Edge From="0" To="2" Label="Source1" />
-            <Edge From="1" To="7" Label="Source1" />
-            <Edge From="2" To="3" Label="Source1" />
-            <Edge From="2" To="10" Label="Source2" />
-            <Edge From="3" To="7" Label="Source3" />
-            <Edge From="4" To="7" Label="Source4" />
+            <Edge From="0" To="3" Label="Source1" />
+            <Edge From="1" To="2" Label="Source1" />
+            <Edge From="2" To="6" Label="Source3" />
+            <Edge From="3" To="4" Label="Source1" />
+            <Edge From="4" To="6" Label="Source2" />
             <Edge From="5" To="6" Label="Source1" />
-            <Edge From="5" To="10" Label="Source1" />
-            <Edge From="6" To="7" Label="Source2" />
+            <Edge From="6" To="7" Label="Source1" />
             <Edge From="7" To="8" Label="Source1" />
-            <Edge From="8" To="9" Label="Source1" />
-            <Edge From="10" To="11" Label="Source1" />
-            <Edge From="11" To="12" Label="Source1" />
           </Edges>
         </Workflow>
       </Expression>
@@ -164,16 +175,194 @@
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="p1:DecodeByteFrame" />
       </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="ExternalizedMapping">
+          <Property Name="Path" DisplayName="VideoStream" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="rx:CreateObservable">
+          <Name>ReadVideo</Name>
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="WorkflowInput">
+                <Name>Source1</Name>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="rx:Delay">
+                  <rx:DueTime>PT0.1S</rx:DueTime>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="MemberSelector">
+                <Selector>DataBytes</Selector>
+              </Expression>
+              <Expression xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="BufferLength" />
+                </PropertyMappings>
+              </Expression>
+              <Expression xsi:type="ExternalizedMapping">
+                <Property Name="Path" />
+              </Expression>
+              <Expression xsi:type="SubscribeSubject">
+                <Name>VideoBytesRead</Name>
+              </Expression>
+              <Expression xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="Offset" />
+                </PropertyMappings>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="dsp:MatrixReader">
+                  <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame2.bin</dsp:Path>
+                  <dsp:Offset>46170</dsp:Offset>
+                  <dsp:SampleRate>0</dsp:SampleRate>
+                  <dsp:ChannelCount>1</dsp:ChannelCount>
+                  <dsp:BufferLength>10354</dsp:BufferLength>
+                  <dsp:Depth>U8</dsp:Depth>
+                  <dsp:Layout>RowMajor</dsp:Layout>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="rx:Take">
+                  <rx:Count>1</rx:Count>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="rx:Zip" />
+              </Expression>
+              <Expression xsi:type="Add" />
+              <Expression xsi:type="MulticastSubject">
+                <Name>VideoBytesRead</Name>
+              </Expression>
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+              <Edge From="0" To="2" Label="Source1" />
+              <Edge From="1" To="7" Label="Source1" />
+              <Edge From="2" To="3" Label="Source1" />
+              <Edge From="2" To="10" Label="Source2" />
+              <Edge From="3" To="7" Label="Source3" />
+              <Edge From="4" To="7" Label="Source4" />
+              <Edge From="5" To="6" Label="Source1" />
+              <Edge From="5" To="10" Label="Source1" />
+              <Edge From="6" To="7" Label="Source2" />
+              <Edge From="7" To="8" Label="Source1" />
+              <Edge From="8" To="9" Label="Source1" />
+              <Edge From="10" To="11" Label="Source1" />
+              <Edge From="11" To="12" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="rx:Concat" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="rx:SelectMany">
+          <Name>ReadVideo</Name>
+          <Workflow>
+            <Nodes>
+              <Expression xsi:type="WorkflowInput">
+                <Name>Source1</Name>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="rx:Delay">
+                  <rx:DueTime>PT0.01S</rx:DueTime>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="MemberSelector">
+                <Selector>DataBytes</Selector>
+              </Expression>
+              <Expression xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="BufferLength" />
+                </PropertyMappings>
+              </Expression>
+              <Expression xsi:type="ExternalizedMapping">
+                <Property Name="Path" />
+              </Expression>
+              <Expression xsi:type="SubscribeSubject">
+                <Name>VideoBytesRead</Name>
+              </Expression>
+              <Expression xsi:type="PropertyMapping">
+                <PropertyMappings>
+                  <Property Name="Offset" />
+                </PropertyMappings>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="dsp:MatrixReader">
+                  <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame2.bin</dsp:Path>
+                  <dsp:Offset>46170</dsp:Offset>
+                  <dsp:SampleRate>0</dsp:SampleRate>
+                  <dsp:ChannelCount>1</dsp:ChannelCount>
+                  <dsp:BufferLength>10354</dsp:BufferLength>
+                  <dsp:Depth>U8</dsp:Depth>
+                  <dsp:Layout>RowMajor</dsp:Layout>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="Combinator">
+                <Combinator xsi:type="rx:Take">
+                  <rx:Count>1</rx:Count>
+                </Combinator>
+              </Expression>
+              <Expression xsi:type="WorkflowOutput" />
+              <Expression xsi:type="Disable">
+                <Builder xsi:type="Combinator">
+                  <Combinator xsi:type="rx:Zip" />
+                </Builder>
+              </Expression>
+              <Expression xsi:type="Disable">
+                <Builder xsi:type="Add" />
+              </Expression>
+              <Expression xsi:type="Disable">
+                <Builder xsi:type="MulticastSubject">
+                  <Name>VideoBytesRead</Name>
+                </Builder>
+              </Expression>
+            </Nodes>
+            <Edges>
+              <Edge From="0" To="1" Label="Source1" />
+              <Edge From="0" To="2" Label="Source1" />
+              <Edge From="1" To="7" Label="Source1" />
+              <Edge From="2" To="3" Label="Source1" />
+              <Edge From="2" To="10" Label="Source2" />
+              <Edge From="3" To="7" Label="Source3" />
+              <Edge From="4" To="7" Label="Source4" />
+              <Edge From="5" To="6" Label="Source1" />
+              <Edge From="5" To="10" Label="Source1" />
+              <Edge From="6" To="7" Label="Source2" />
+              <Edge From="7" To="8" Label="Source1" />
+              <Edge From="8" To="9" Label="Source1" />
+              <Edge From="10" To="11" Label="Source1" />
+              <Edge From="11" To="12" Label="Source1" />
+            </Edges>
+          </Workflow>
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="dsp:ConvertToArray">
+          <dsp:Depth xsi:nil="true" />
+        </Builder>
+      </Expression>
+      <Expression xsi:type="Disable">
+        <Builder xsi:type="Combinator">
+          <Combinator xsi:type="p1:DecodeByteFrame" />
+        </Builder>
+      </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="IntProperty">
           <Value>0</Value>
         </Combinator>
       </Expression>
       <Expression xsi:type="MulticastSubject">
-        <Name>VideoBytesRead</Name>
+        <Name>Offset</Name>
       </Expression>
       <Expression xsi:type="rx:BehaviorSubject" TypeArguments="sys:Int32">
-        <rx:Name>VideoBytesRead</rx:Name>
+        <rx:Name>Offset</rx:Name>
       </Expression>
     </Nodes>
     <Edges>
@@ -182,11 +371,20 @@
       <Edge From="2" To="3" Label="Source1" />
       <Edge From="3" To="4" Label="Source1" />
       <Edge From="4" To="5" Label="Source1" />
-      <Edge From="5" To="7" Label="Source1" />
-      <Edge From="6" To="7" Label="Source2" />
-      <Edge From="7" To="8" Label="Source1" />
+      <Edge From="5" To="6" Label="Source1" />
+      <Edge From="6" To="8" Label="Source1" />
+      <Edge From="7" To="8" Label="Source2" />
       <Edge From="8" To="9" Label="Source1" />
-      <Edge From="10" To="11" Label="Source1" />
+      <Edge From="9" To="11" Label="Source1" />
+      <Edge From="10" To="11" Label="Source2" />
+      <Edge From="11" To="12" Label="Source1" />
+      <Edge From="12" To="13" Label="Source1" />
+      <Edge From="14" To="15" Label="Source1" />
+      <Edge From="15" To="16" Label="Source1" />
+      <Edge From="16" To="17" Label="Source1" />
+      <Edge From="17" To="18" Label="Source1" />
+      <Edge From="18" To="19" Label="Source1" />
+      <Edge From="20" To="21" Label="Source1" />
     </Edges>
   </Workflow>
 </WorkflowBuilder>
