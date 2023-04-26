@@ -45,7 +45,7 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixReader">
                 <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame1.bin</dsp:Path>
-                <dsp:Offset>7008</dsp:Offset>
+                <dsp:Offset>2080</dsp:Offset>
                 <dsp:SampleRate>0</dsp:SampleRate>
                 <dsp:ChannelCount>1</dsp:ChannelCount>
                 <dsp:BufferLength>32</dsp:BufferLength>
@@ -141,10 +141,10 @@
             <Expression xsi:type="Combinator">
               <Combinator xsi:type="dsp:MatrixReader">
                 <dsp:Path>C:\Users\neurogears\NeuroGEARS Ltd\Emotional Cities - Documents\Experiment Control and Acquisition\Datasets\202304132023_04_13_09_26_52\PupilLabs\WorldCamera_Frame2.bin</dsp:Path>
-                <dsp:Offset>2293364</dsp:Offset>
+                <dsp:Offset>664912</dsp:Offset>
                 <dsp:SampleRate>0</dsp:SampleRate>
                 <dsp:ChannelCount>1</dsp:ChannelCount>
-                <dsp:BufferLength>1954</dsp:BufferLength>
+                <dsp:BufferLength>8386</dsp:BufferLength>
                 <dsp:Depth>U8</dsp:Depth>
                 <dsp:Layout>RowMajor</dsp:Layout>
               </Combinator>
@@ -173,7 +173,9 @@
         <dsp:Depth xsi:nil="true" />
       </Expression>
       <Expression xsi:type="Combinator">
-        <Combinator xsi:type="p1:DecodeByteFrame" />
+        <Combinator xsi:type="p1:DecodeByteFrame">
+          <p1:BinariesPath>C:/Users/neurogears/source/repos/FFmpeg.AutoGen/FFmpeg/bin/x64</p1:BinariesPath>
+        </Combinator>
       </Expression>
       <Expression xsi:type="Combinator">
         <Combinator xsi:type="IntProperty">

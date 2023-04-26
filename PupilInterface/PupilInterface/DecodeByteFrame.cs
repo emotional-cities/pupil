@@ -11,30 +11,21 @@ using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 using OpenCV.Net;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using Bonsai.Reactive;
 
 namespace PupilInterface
 {
     public class DecodeByteFrame : Transform<byte[], IplImage>
     {
+        public string BinariesPath { get; set; }
+
         public unsafe override IObservable<IplImage> Process(IObservable<byte[]> source)
         {
-            var decoder = new VideoDecoder();
+            var decoder = new VideoDecoder(BinariesPath);
 
             return source.Select(val =>
             {
                 IplImage decodedFrame = decoder.DecodeFrame(val);
-
-                //IplImage image;
-                //if (decodedFrame.width > 0 && decodedFrame.height > 0)
-                //{
-                //    image = new IplImage(new OpenCV.Net.Size(decodedFrame.width, decodedFrame.height), IplDepth.U8, 1, (IntPtr)decodedFrame.data[0]);
-                //}
-                //else
-                //{
-                //    image = new IplImage(new OpenCV.Net.Size(1088, 1080), IplDepth.U8, 1);
-                //}
-
-                //return image;
 
                 return decodedFrame;
             });
@@ -47,9 +38,9 @@ namespace PupilInterface
         AVCodec* pAvCodec;
         AVCodecContext* pCodecContext;
 
-        public VideoDecoder()
+        public VideoDecoder(string binariesPath)
         {
-            FFmpegBinariesHelper.RegisterFFmpegBinaries(); // TODO - this sort of stuff should probably go in some general resource node
+            FFmpegBinariesHelper.RegisterFFmpegBinaries(binariesPath); // TODO - this sort of stuff should probably go in some general resource node
             DynamicallyLoadedBindings.Initialize();
 
             codecID = AVCodecID.AV_CODEC_ID_H264;
@@ -86,16 +77,6 @@ namespace PupilInterface
                     );
 
                     AVFrame convertedFrame = vfc.Convert(sourceFrame);
-
-                    //using (var bitmap = new Bitmap(convertedFrame.width, convertedFrame.height, convertedFrame.linesize[0], PixelFormat.Format24bppRgb, (IntPtr)convertedFrame.data[0]))
-                    //{
-                    //    bitmap.Save($"frame-{counter}.jpg", ImageFormat.Jpeg);
-                    //}
-
-                    //int numBytes = ffmpeg.av_image_get_buffer_size(AVPixelFormat.AV_PIX_FMT_BGR24, convertedFrame.width, convertedFrame.height, 32);
-
-                    //byte[] copyArray = new byte[numBytes];
-                    //Marshal.Copy((IntPtr)convertedFrame.data[0], copyArray, 0, numBytes);
 
                     IplImage image = new IplImage(new OpenCV.Net.Size(convertedFrame.width, convertedFrame.height), IplDepth.U8, 3, (IntPtr)convertedFrame.data[0]);
                     IplImage imageCopy = image.Clone();
