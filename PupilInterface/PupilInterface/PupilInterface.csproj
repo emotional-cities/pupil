@@ -27,19 +27,12 @@
   <ItemGroup>
     <PackageReference Include="Bonsai.Core" Version="2.7.1" />
     <PackageReference Include="FFmpeg.AutoGen" Version="6.0.0" />
+    <PackageReference Include="FFmpeg.AutoGen.Abstractions" Version="6.0.0" />
+    <PackageReference Include="FFmpeg.AutoGen.Bindings.DynamicallyLoaded" Version="6.0.0" />
     <PackageReference Include="NetMQ" Version="4.0.1.8" />
     <PackageReference Include="NetMQ.Zyre" Version="1.0.0-rc1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="OpenCV.Net" Version="3.4.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="FFmpeg.AutoGen.Abstractions">
-      <HintPath>..\..\..\..\FFmpeg.AutoGen\FFmpeg.AutoGen.Bindings.DynamicallyLoaded\bin\Debug\net472\FFmpeg.AutoGen.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="FFmpeg.AutoGen.Bindings.DynamicallyLoaded">
-      <HintPath>..\..\..\..\FFmpeg.AutoGen\FFmpeg.AutoGen.Bindings.DynamicallyLoaded\bin\Debug\net472\FFmpeg.AutoGen.Bindings.DynamicallyLoaded.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
