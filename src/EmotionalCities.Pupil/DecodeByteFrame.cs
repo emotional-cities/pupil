@@ -1,17 +1,10 @@
 ﻿using Bonsai;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FFmpeg.AutoGen.Abstractions;
 using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 using OpenCV.Net;
-using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
-using Bonsai.Reactive;
 
 namespace EmotionalCities.Pupil
 {
