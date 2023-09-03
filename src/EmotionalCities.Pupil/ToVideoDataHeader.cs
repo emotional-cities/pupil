@@ -6,7 +6,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PupilInterface
+namespace EmotionalCities.Pupil
 {
     public class ToVideoDataHeader : Transform<byte[], VideoDataHeader>
     {

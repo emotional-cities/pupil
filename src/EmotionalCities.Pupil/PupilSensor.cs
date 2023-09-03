@@ -7,7 +7,7 @@ using NetMQ.Zyre.ZyreEvents;
 using Newtonsoft.Json.Linq;
 using NetMQ;
 
-namespace PupilInterface
+namespace EmotionalCities.Pupil
 {
     public class PupilSensor : Transform<NetMQFrame, SensorData>
     {

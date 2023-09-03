@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>NeuroGEARS</Authors>
-    <Title>NeuroGEARS - Pupil Library</Title>
+    <Title>Emotional Cities - Pupil Library</Title>
     <Description>Bonsai Library containing interfaces for streaming data from Pupil Labs eye tracking hardware.</Description>
     <Copyright>Copyright © NeuroGEARS Ltd 2022</Copyright>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>

@@ -7,7 +7,7 @@ using NetMQ.Zyre.ZyreEvents;
 using NetMQ;
 
 
-namespace PupilInterface
+namespace EmotionalCities.Pupil
 {
     public class TestConversion : Transform<NetMQFrame, float>
     {
