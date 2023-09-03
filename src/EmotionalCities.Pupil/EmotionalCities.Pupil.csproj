@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>NeuroGEARS</Authors>
+    <Title>Emotional Cities - Pupil Library</Title>
+    <Description>Bonsai Library containing interfaces for streaming data from Pupil Labs eye tracking hardware.</Description>
+    <Copyright>Copyright © NeuroGEARS Ltd 2022</Copyright>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageProjectUrl>https://emotional-cities.github.io/pupil</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/emotional-cities/pupil.git</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryType>git</RepositoryType>
+    <PackageIcon>icon.png</PackageIcon>
+    <IncludeSymbols Condition="'$(Configuration)'=='Release'">true</IncludeSymbols>
+    <GeneratePackageOnBuild Condition="'$(Configuration)'=='Release'">true</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageOutputPath>..\bin\$(Configuration)</PackageOutputPath>
+    <PackageTags>Bonsai Rx Pupil Eye Tracker</PackageTags>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TargetFramework>net472</TargetFramework>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>rc1</VersionSuffix>
+    <Features>strict</Features>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Bonsai.Core" Version="2.7.1" />
+    <PackageReference Include="FFmpeg.AutoGen" Version="6.0.0" />
+    <PackageReference Include="FFmpeg.AutoGen.Abstractions" Version="6.0.0" />
+    <PackageReference Include="FFmpeg.AutoGen.Bindings.DynamicallyLoaded" Version="6.0.0" />
+    <PackageReference Include="NetMQ" Version="4.0.1.8" />
+    <PackageReference Include="NetMQ.Zyre" Version="1.0.0-rc1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="OpenCV.Net" Version="3.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\..\LICENSE" PackagePath="/" />
+    <Content Include="..\..\icon.png" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

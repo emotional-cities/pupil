@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using Bonsai.Reactive;
 
-namespace PupilInterface
+namespace EmotionalCities.Pupil
 {
     public class DecodeByteFrame : Transform<byte[], IplImage>
     {
