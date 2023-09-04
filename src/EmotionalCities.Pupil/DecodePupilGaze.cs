@@ -1,4 +1,5 @@
 ﻿using Bonsai;
+using OpenCV.Net;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -21,32 +22,14 @@ namespace EmotionalCities.Pupil
         /// The sequence of gaze measurements encoded as raw binary data.
         /// </param>
         /// <returns>
-        /// A sequence of <see cref="PupilGaze"/> objects representing the
+        /// A sequence of <see cref="Point2f"/> objects representing the
         /// decoded gaze measurement.
         /// </returns>
-        public IObservable<PupilGaze> Process(IObservable<byte[]> source)
+        public IObservable<Point2f> Process(IObservable<byte[]> source)
         {
-            return source.Select(value => new PupilGaze
-            {
-                X = BitConverter.ToSingle(value, 0),
-                Y = BitConverter.ToSingle(value, 4)
-            });
+            return source.Select(value => new Point2f(
+                x: BitConverter.ToSingle(value, 0),
+                y: BitConverter.ToSingle(value, 4)));
         }
-    }
-
-    /// <summary>
-    /// Represents a single gaze measurement.
-    /// </summary>
-    public struct PupilGaze
-    {
-        /// <summary>
-        /// The x-position of the gaze measurement.
-        /// </summary>
-        public float X;
-
-        /// <summary>
-        /// The y-position of the gaze measurement.
-        /// </summary>
-        public float Y;
     }
 }
