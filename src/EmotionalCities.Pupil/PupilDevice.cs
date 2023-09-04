@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Bonsai;
@@ -33,39 +34,45 @@ namespace EmotionalCities.Pupil
         /// </returns>
         public override IObservable<SensorInfo> Generate()
         {
-            return Observable.Using(
-                cancellationToken =>
-                {
-                    Zyre zyre = new Zyre(nameof(PupilDevice));
-                    zyre.Join("pupil-mobile-v4");
-                    zyre.SetInterface(Interface);
-                    return Task.FromResult(zyre);
-                },
-                (zyre, cancellationToken) =>
-                {
-                    zyre.Start();
-                    return Task.FromResult(Observable.FromEventPattern<ZyreEventWhisper>(
-                        handler => zyre.WhisperEvent += handler,
-                        handler => zyre.WhisperEvent -= handler)
-                        .Select(evt =>
-                        {
-                            var message = evt.EventArgs.Content;
-                            var payload = message.First.ConvertToString();
-                            dynamic jData = JObject.Parse(payload);
-                            string sensorName = jData.sensor_name;
-                            string sensorUuid = jData.sensor_uuid;
-                            string dataEndpoint = jData.data_endpoint;
-                            string commandEndpoint = jData.command_endpoint;
+            return Observable.Create<SensorInfo>(observer =>
+            {
+                var zyre = new Zyre(nameof(PupilDevice));
+                zyre.Join("pupil-mobile-v4");
+                zyre.SetInterface(Interface);
+                zyre.Start();
 
-                            return new SensorInfo
-                            {
-                                SensorName = sensorName,
-                                SensorUuid = sensorUuid,
-                                DataEndpoint = dataEndpoint,
-                                CommandEndpoint = commandEndpoint
-                            };
-                        }));
+                var sensorInfo = Observable.FromEventPattern<ZyreEventWhisper>(
+                    handler => zyre.WhisperEvent += handler,
+                    handler => zyre.WhisperEvent -= handler)
+                    .Select(evt =>
+                    {
+                        var message = evt.EventArgs.Content;
+                        var payload = message.First.ConvertToString();
+                        dynamic jData = JObject.Parse(payload);
+                        string sensorName = jData.sensor_name;
+                        string sensorUuid = jData.sensor_uuid;
+                        string dataEndpoint = jData.data_endpoint;
+                        string commandEndpoint = jData.command_endpoint;
+
+                        return new SensorInfo
+                        {
+                            SensorName = sensorName,
+                            SensorUuid = sensorUuid,
+                            DataEndpoint = dataEndpoint,
+                            CommandEndpoint = commandEndpoint
+                        };
+                    });
+                var subscription = sensorInfo.Subscribe(observer);
+                return Disposable.Create(() =>
+                {
+                    subscription.Dispose();
+                    Task.Run(() =>
+                    {
+                        zyre.Stop();
+                        zyre.Dispose();
+                    });
                 });
+            });
         }
     }
 }
