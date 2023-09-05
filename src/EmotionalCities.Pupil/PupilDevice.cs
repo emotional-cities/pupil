@@ -53,11 +53,16 @@ namespace EmotionalCities.Pupil
                         string sensorUuid = jData.sensor_uuid;
                         string dataEndpoint = jData.data_endpoint;
                         string commandEndpoint = jData.command_endpoint;
+                        SensorType sensorType = (SensorType)Enum.Parse(
+                            typeof(SensorType),
+                            (string)jData.sensor_type,
+                            ignoreCase: true);
 
                         return new SensorInfo
                         {
                             SensorName = sensorName,
                             SensorUuid = sensorUuid,
+                            SensorType = sensorType,
                             DataEndpoint = dataEndpoint,
                             CommandEndpoint = commandEndpoint
                         };
