@@ -20,6 +20,7 @@
     <TargetFramework>net472</TargetFramework>
     <VersionPrefix>0.1.0</VersionPrefix>
     <VersionSuffix>rc1</VersionSuffix>
+    <LangVersion>8.0</LangVersion>
     <Features>strict</Features>
   </PropertyGroup>
 
