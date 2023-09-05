@@ -1,15 +1,11 @@
 ﻿using FFmpeg.AutoGen.Abstractions;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EmotionalCities.Pupil
 {
-    public sealed unsafe class VideoFrameConverter : IDisposable
+    sealed unsafe class VideoFrameConverter : IDisposable
     {
         private readonly IntPtr _convertedFrameBufferPtr;
         private readonly Size _destinationSize;
@@ -17,8 +13,11 @@ namespace EmotionalCities.Pupil
         private readonly int4 _dstLinesize;
         private readonly SwsContext* _pConvertContext;
 
-        public VideoFrameConverter(Size sourceSize, AVPixelFormat sourcePixelFormat,
-            Size destinationSize, AVPixelFormat destinationPixelFormat)
+        public VideoFrameConverter(
+            Size sourceSize,
+            AVPixelFormat sourcePixelFormat,
+            Size destinationSize,
+            AVPixelFormat destinationPixelFormat)
         {
             _destinationSize = destinationSize;
 

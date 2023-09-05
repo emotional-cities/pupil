@@ -1,38 +1,60 @@
 ﻿using Bonsai;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FFmpeg.AutoGen.Abstractions;
 using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 using OpenCV.Net;
-using System.Runtime.InteropServices;
-using System.Drawing.Imaging;
-using Bonsai.Reactive;
+using System.ComponentModel;
+using NetMQ;
 
 namespace EmotionalCities.Pupil
 {
-    public class DecodeByteFrame : Transform<byte[], IplImage>
+    /// <summary>
+    /// Represents an operator that decodes a sequence of binary encoded video frames.
+    /// </summary>
+    [Description("Decodes a sequence of binary encoded video frames.")]
+    public class DecodeVideoFrame : Transform<byte[], IplImage>
     {
+        /// <summary>
+        /// Gets or sets the path to the FFmpeg binaries used to decode the video frames.
+        /// </summary>
+        [Description("The path to the FFmpeg binaries used to decode the video frames.")]
         public string BinariesPath { get; set; }
 
+        /// <summary>
+        /// Decodes an observable sequence of video frames retrieved from the
+        /// Pupil Network API.
+        /// </summary>
+        /// <param name="source">The sequence of Network API messages.</param>
+        /// <returns>
+        /// A sequence of <see cref="IplImage"/> objects representing the
+        /// decoded frames.
+        /// </returns>
+        public unsafe IObservable<IplImage> Process(IObservable<NetMQMessage> source)
+        {
+            var decoder = new VideoDecoder(BinariesPath);
+            return source.Select(message => decoder.DecodeFrame(message.Last.Buffer));
+        }
+
+        /// <summary>
+        /// Decodes an observable sequence of binary encoded video frames.
+        /// </summary>
+        /// <param name="source">
+        /// The sequence of video frames encoded as raw binary data.
+        /// </param>
+        /// <returns>
+        /// A sequence of <see cref="IplImage"/> objects representing the
+        /// decoded frames.
+        /// </returns>
         public unsafe override IObservable<IplImage> Process(IObservable<byte[]> source)
         {
             var decoder = new VideoDecoder(BinariesPath);
-
-            return source.Select(val =>
-            {
-                IplImage decodedFrame = decoder.DecodeFrame(val);
-
-                return decodedFrame;
-            });
+            return source.Select(decoder.DecodeFrame);
         }
     }
 
-    public unsafe class VideoDecoder
+    unsafe class VideoDecoder
     {
         AVCodecID codecID;
         AVCodec* pAvCodec;
@@ -40,7 +62,7 @@ namespace EmotionalCities.Pupil
 
         public VideoDecoder(string binariesPath)
         {
-            FFmpegBinariesHelper.RegisterFFmpegBinaries(binariesPath); // TODO - this sort of stuff should probably go in some general resource node
+            DynamicallyLoadedBindings.LibrariesPath = binariesPath;
             DynamicallyLoadedBindings.Initialize();
 
             codecID = AVCodecID.AV_CODEC_ID_H264;
