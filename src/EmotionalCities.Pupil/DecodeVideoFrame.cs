@@ -6,6 +6,7 @@ using FFmpeg.AutoGen.Abstractions;
 using FFmpeg.AutoGen.Bindings.DynamicallyLoaded;
 using OpenCV.Net;
 using System.ComponentModel;
+using NetMQ;
 
 namespace EmotionalCities.Pupil
 {
@@ -20,6 +21,21 @@ namespace EmotionalCities.Pupil
         /// </summary>
         [Description("The path to the FFmpeg binaries used to decode the video frames.")]
         public string BinariesPath { get; set; }
+
+        /// <summary>
+        /// Decodes an observable sequence of video frames retrieved from the
+        /// Pupil Network API.
+        /// </summary>
+        /// <param name="source">The sequence of Network API messages.</param>
+        /// <returns>
+        /// A sequence of <see cref="IplImage"/> objects representing the
+        /// decoded frames.
+        /// </returns>
+        public unsafe IObservable<IplImage> Process(IObservable<NetMQMessage> source)
+        {
+            var decoder = new VideoDecoder(BinariesPath);
+            return source.Select(message => decoder.DecodeFrame(message.Last.Buffer));
+        }
 
         /// <summary>
         /// Decodes an observable sequence of binary encoded video frames.
