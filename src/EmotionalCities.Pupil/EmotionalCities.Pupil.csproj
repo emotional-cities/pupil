@@ -19,7 +19,7 @@
     <PackageTags>Bonsai Rx Pupil Eye Tracker</PackageTags>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <TargetFramework>net472</TargetFramework>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.1</VersionPrefix>
     <VersionSuffix>rc4</VersionSuffix>
     <LangVersion>8.0</LangVersion>
     <Features>strict</Features>
